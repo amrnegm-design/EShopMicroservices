@@ -43,7 +43,7 @@ app.MapCarter();
 
 app.UseExceptionHandler(options => { });
 
-app.UseHealthChecks("/health",
+app.MapHealthChecks("/health",
     new HealthCheckOptions
     {
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
