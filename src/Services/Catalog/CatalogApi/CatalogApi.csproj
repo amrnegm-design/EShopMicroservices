@@ -6,6 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerFastModeProjectMountDirectory>/app/bin/Debug/net10.0</DockerFastModeProjectMountDirectory>
+    <UserSecretsId>595b2491-c443-43d0-8b3d-fee2ee52474b</UserSecretsId>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="14.1.0" />
+    <PackageReference Include="Carter" Version="10.0.0" />
+    <PackageReference Include="Marten" Version="8.31.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks\BuildingBlocks.csproj" />
   </ItemGroup>
 
 </Project>
