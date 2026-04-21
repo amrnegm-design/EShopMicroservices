@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace CatalogApi.Products.UpdateProduct;
 
 public record UpdateProductCommand(
@@ -24,15 +26,18 @@ public class UpdateProductValidator : AbstractValidator<UpdateProductCommand>
     }
 }
 
-internal class UpdateProductHandler(IDocumentSession session, ILogger<UpdateProductHandler> logger)
+internal class UpdateProductHandler(IDocumentSession session)
     : ICommandHandler<UpdateProductCommand, UpdateProductResult>
 {
     public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
-        logger.LogInformation("UpdateProductHandler.Handle called with {@Command}", command);
-
         // load product from database
         var product = await session.LoadAsync<Product>(command.Id, cancellationToken);
+
+        if (product == null) 
+        {
+            throw new ProductNotFoundException(command.Id);
+        }
 
         // update product fields from command
         product!.Name = command.Name;
