@@ -8,7 +8,7 @@ using System.Text;
 namespace BuildingBlocks.Behaviors
 {
     public class ValidationBehavior<TRequest, TResponse>
-        (IEnumerable<IValidator<IRequest>> validators)
+        (IEnumerable<IValidator<TRequest>> validators)
         : IPipelineBehavior<TRequest, TResponse>
         where TRequest : ICommand<TResponse>
     {
