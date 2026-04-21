@@ -17,19 +17,14 @@ public class CreateProductValidator : AbstractValidator<CreateProductCommand>
     }
 }
 
-internal class CreateProductHandler(IDocumentSession session, IValidator<CreateProductCommand> validator)
+internal class CreateProductHandler(IDocumentSession session, ILogger<CreateProductHandler> logger)
     : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        var result = await validator.ValidateAsync(command);
-        var errors = result.Errors.Select(e => e.ErrorMessage).ToList();
-        if (errors.Any()) 
-        {
-            throw new ValidationException(errors.FirstOrDefault());
-        }
+        logger.LogInformation("CreateProductHandler.Handle called with {@Command}", command);
 
-        //create product entity from commnd object product dto 
+        //create product entity from commnd object product dto
 
         var product = new Product()
         {

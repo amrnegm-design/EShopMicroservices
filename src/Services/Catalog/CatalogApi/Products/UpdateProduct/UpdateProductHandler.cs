@@ -10,11 +10,13 @@ public record UpdateProductCommand(
 
 public record UpdateProductResult(bool IsSuccess);
 
-internal class UpdateProductHandler(IDocumentSession session)
+internal class UpdateProductHandler(IDocumentSession session, ILogger<UpdateProductHandler> logger)
     : ICommandHandler<UpdateProductCommand, UpdateProductResult>
 {
     public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
+        logger.LogInformation("UpdateProductHandler.Handle called with {@Command}", command);
+
         // load product from database
         var product = await session.LoadAsync<Product>(command.Id, cancellationToken);
 
