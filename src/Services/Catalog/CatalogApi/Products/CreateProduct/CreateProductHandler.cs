@@ -5,11 +5,30 @@ public record CreateProductCommand(ProductDto Product) : ICommand<CreateProductR
 
 public record CreateProductResult(Guid Id);
 
-internal class CreateProductHandler(IDocumentSession session)
+public class CreateProductValidator : AbstractValidator<CreateProductCommand>
+{
+    public CreateProductValidator()
+    {
+        RuleFor(x => x.Product).NotNull().WithMessage("Product is required");
+        RuleFor(x => x.Product.Name).NotEmpty().WithMessage("Name is required");
+        RuleFor(x => x.Product.Category).NotEmpty().WithMessage("Category is required");
+        RuleFor(x => x.Product.ImageFile).NotEmpty().WithMessage("ImageFile is required");
+        RuleFor(x => x.Product.Price).GreaterThan(0).WithMessage("Price must be greater than 0");
+    }
+}
+
+internal class CreateProductHandler(IDocumentSession session, IValidator<CreateProductCommand> validator)
     : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
+        var result = await validator.ValidateAsync(command);
+        var errors = result.Errors.Select(e => e.ErrorMessage).ToList();
+        if (errors.Any()) 
+        {
+            throw new ValidationException(errors.FirstOrDefault());
+        }
+
         //create product entity from commnd object product dto 
 
         var product = new Product()
