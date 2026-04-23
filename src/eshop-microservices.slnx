@@ -9,6 +9,12 @@
   <Folder Name="/Services/Catalog/">
     <Project Path="Services/Catalog/CatalogApi/CatalogApi.csproj" Id="175fa792-8190-4a8f-bfbe-66bc6b50b4c2" />
   </Folder>
+  <Folder Name="/Services/Discount/">
+    <Project Path="Services/Discount/DiscountGrpc/DiscountGrpc.csproj" Id="55b5820a-5532-41b8-86eb-889da1f5cd5e" />
+  </Folder>
+  <Folder Name="/Services/Ordering/">
+    <Project Path="Services/Ordering/OrderingApi/OrderingApi.csproj" Id="3b4c8b21-84cd-4464-9cb0-7c034b6ac361" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
