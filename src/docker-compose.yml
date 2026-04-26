@@ -5,6 +5,9 @@ services:
   basketdb:
     image: postgres:17
 
+  orderingdb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
   distributedcache:
     image: redis
 
@@ -30,4 +33,5 @@ volumes:
   postgres_catalog:
   postgres_basket:
   discount_sqlite:
+  mssql_ordering:
 
