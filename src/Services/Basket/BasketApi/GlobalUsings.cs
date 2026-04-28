@@ -1,4 +1,5 @@
 global using BasketApi.Data;
+global using BasketApi.Dtos;
 global using BasketApi.Exceptions;
 global using BasketApi.Models;
 global using BuildingBlocks.CQRS;

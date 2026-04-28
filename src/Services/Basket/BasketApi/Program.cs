@@ -1,5 +1,6 @@
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
+using BuildingBlocks.Messaging.MassTransit;
 using DiscountGrpc;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -48,6 +49,10 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
 
     return handler;
 });
+
+// Async Communication Services
+builder.Services.AddMessageBroker(builder.Configuration); // we did not add any assembly here because we will add consumers in the Ordering API, not here
+
 
 builder.Services.AddValidatorsFromAssembly(assembly);
 
