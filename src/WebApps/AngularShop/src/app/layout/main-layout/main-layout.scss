@@ -1,0 +1,21 @@
+.layout-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 240px;
+  background: #1e293b;
+  color: #f8fafc;
+  border-right: none;
+}
+
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.content {
+  display: block;
+  min-height: calc(100vh - 64px);
+}

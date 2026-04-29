@@ -1,0 +1,101 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Order details</h1>
+    <div class="actions">
+      <button mat-stroked-button (click)="back()"><mat-icon>arrow_back</mat-icon> Back</button>
+      @if (order(); as o) {
+        <a mat-flat-button color="primary"
+           [routerLink]="['/ordering/orders', o.orderName, 'edit']"
+           [state]="{ order: o }">
+          <mat-icon>edit</mat-icon> Edit
+        </a>
+      }
+    </div>
+  </div>
+
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else if (error(); as err) {
+    <app-error-message [message]="err" />
+  } @else if (order(); as o) {
+    <div class="grid">
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>{{ o.orderName }}</mat-card-title>
+          <mat-card-subtitle>{{ o.id }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <dl>
+            <dt>Status</dt>
+            <dd>
+              <mat-chip-set><mat-chip class="status-chip">{{ statusLabel[o.status] }}</mat-chip></mat-chip-set>
+            </dd>
+            <dt>Customer</dt><dd><code>{{ o.customerId }}</code></dd>
+          </dl>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-header><mat-card-title>Payment</mat-card-title></mat-card-header>
+        <mat-card-content>
+          <dl>
+            <dt>Card name</dt><dd>{{ o.payment.cardName }}</dd>
+            <dt>Card</dt><dd>•••• {{ o.payment.cardNumber.slice(-4) }}</dd>
+            <dt>Expiration</dt><dd>{{ o.payment.expiration }}</dd>
+            <dt>Method</dt><dd>{{ o.payment.paymentMethod }}</dd>
+          </dl>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-header><mat-card-title>Shipping address</mat-card-title></mat-card-header>
+        <mat-card-content>
+          <dl>
+            <dt>Name</dt><dd>{{ o.shippingAddress.firstName }} {{ o.shippingAddress.lastName }}</dd>
+            <dt>Email</dt><dd>{{ o.shippingAddress.emailAddress || '—' }}</dd>
+            <dt>Address</dt><dd>{{ o.shippingAddress.addressLine }}</dd>
+            <dt>Country</dt><dd>{{ o.shippingAddress.country }}, {{ o.shippingAddress.state }} {{ o.shippingAddress.zipCode }}</dd>
+          </dl>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-header><mat-card-title>Billing address</mat-card-title></mat-card-header>
+        <mat-card-content>
+          <dl>
+            <dt>Name</dt><dd>{{ o.billingAddress.firstName }} {{ o.billingAddress.lastName }}</dd>
+            <dt>Address</dt><dd>{{ o.billingAddress.addressLine }}</dd>
+            <dt>Country</dt><dd>{{ o.billingAddress.country }}, {{ o.billingAddress.state }} {{ o.billingAddress.zipCode }}</dd>
+          </dl>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <mat-card appearance="outlined" style="margin-top:16px">
+      <mat-card-header><mat-card-title>Items</mat-card-title></mat-card-header>
+      <table mat-table [dataSource]="o.orderItems">
+        <ng-container matColumnDef="product">
+          <th mat-header-cell *matHeaderCellDef>Product</th>
+          <td mat-cell *matCellDef="let i"><code>{{ i.productId }}</code></td>
+        </ng-container>
+        <ng-container matColumnDef="qty">
+          <th mat-header-cell *matHeaderCellDef>Qty</th>
+          <td mat-cell *matCellDef="let i">{{ i.quantity }}</td>
+        </ng-container>
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let i">{{ i.price | currency }}</td>
+        </ng-container>
+        <ng-container matColumnDef="subtotal">
+          <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+          <td mat-cell *matCellDef="let i">{{ (i.price * i.quantity) | currency }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="itemColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: itemColumns"></tr>
+      </table>
+      <div style="padding:16px; text-align:right; font-weight:500;">
+        Total: {{ total() | currency }}
+      </div>
+    </mat-card>
+  }
+</div>

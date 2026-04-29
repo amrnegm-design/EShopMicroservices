@@ -1,0 +1,89 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>My basket</h1>
+    <div class="actions">
+      @if (userName()) {
+        <button mat-stroked-button (click)="switchUser()"><mat-icon>person</mat-icon> Switch user</button>
+        <a mat-flat-button color="primary" routerLink="/basket/add"><mat-icon>add</mat-icon> Add item</a>
+        <a mat-stroked-button color="primary" routerLink="/basket/checkout"><mat-icon>payments</mat-icon> Checkout</a>
+      }
+    </div>
+  </div>
+
+  @if (!userName()) {
+    <mat-card appearance="outlined" class="user-card">
+      <h3>Pick a basket owner</h3>
+      <p class="muted">Baskets are keyed by username. Enter one to view or create a basket.</p>
+      <form [formGroup]="userForm" (ngSubmit)="setUser()">
+        <mat-form-field appearance="outline">
+          <mat-label>User name</mat-label>
+          <input matInput formControlName="userName" placeholder="swn">
+        </mat-form-field>
+        <div class="row">
+          <button mat-flat-button color="primary" type="submit" [disabled]="userForm.invalid">
+            <mat-icon>login</mat-icon> Continue
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  } @else {
+    @if (loading()) {
+      <app-loading-spinner message="Loading basket…" />
+    } @else if (error(); as err) {
+      <app-error-message [message]="err" />
+    } @else if (!hasItems()) {
+      <app-empty-state
+        icon="shopping_cart"
+        title="Empty basket"
+        [message]="'No items yet for ' + userName()">
+        <a mat-flat-button color="primary" routerLink="/basket/add" style="margin-top:16px">
+          <mat-icon>add</mat-icon> Add your first item
+        </a>
+      </app-empty-state>
+    } @else {
+      <mat-card appearance="outlined">
+        <div style="padding:12px 16px">
+          Basket for <strong>{{ userName() }}</strong>
+        </div>
+        <table mat-table [dataSource]="cart()?.items ?? []">
+          <ng-container matColumnDef="product">
+            <th mat-header-cell *matHeaderCellDef>Product</th>
+            <td mat-cell *matCellDef="let i">{{ i.productName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="color">
+            <th mat-header-cell *matHeaderCellDef>Color</th>
+            <td mat-cell *matCellDef="let i">{{ i.color || '—' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>Qty</th>
+            <td mat-cell *matCellDef="let i">{{ i.quantity }}</td>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+            <td mat-cell *matCellDef="let i">{{ i.price | currency }}</td>
+          </ng-container>
+          <ng-container matColumnDef="subtotal">
+            <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+            <td mat-cell *matCellDef="let i">{{ subtotal(i) | currency }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let i">
+              <button mat-icon-button color="warn" (click)="removeItem(i)" title="Remove">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <div class="total">Total: <span>{{ total() | currency }}</span></div>
+        <div style="display:flex; justify-content:flex-end; padding: 0 16px 16px; gap:8px">
+          <button mat-stroked-button color="warn" (click)="clearBasket()">
+            <mat-icon>delete_sweep</mat-icon> Clear basket
+          </button>
+        </div>
+      </mat-card>
+    }
+  }
+</div>

@@ -1,0 +1,107 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Checkout</h1>
+  </div>
+
+  @if (loading()) {
+    <app-loading-spinner message="Loading basket…" />
+  } @else if (error(); as err) {
+    <app-error-message [message]="err" />
+  } @else if (!cart() || (cart()!.items.length === 0)) {
+    <app-empty-state
+      icon="shopping_cart_off"
+      title="Empty basket"
+      message="Add items to the basket before checking out.">
+      <a mat-flat-button color="primary" routerLink="/basket" style="margin-top:16px">
+        <mat-icon>shopping_cart</mat-icon> Go to basket
+      </a>
+    </app-empty-state>
+  } @else {
+    <mat-card appearance="outlined" class="form-card">
+      <div class="summary">
+        <strong>{{ userName() }}</strong> — {{ cart()!.items.length }} items, total
+        <strong>{{ total() | currency }}</strong>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <h3>Customer</h3>
+        <mat-form-field appearance="outline">
+          <mat-label>Customer ID (GUID)</mat-label>
+          <input matInput formControlName="customerId">
+        </mat-form-field>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>First name</mat-label>
+            <input matInput formControlName="firstName">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Last name</mat-label>
+            <input matInput formControlName="lastName">
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="emailAddress">
+        </mat-form-field>
+
+        <h3>Shipping</h3>
+        <mat-form-field appearance="outline">
+          <mat-label>Address line</mat-label>
+          <input matInput formControlName="addressLine">
+        </mat-form-field>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <input matInput formControlName="country">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>State</mat-label>
+            <input matInput formControlName="state">
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Zip code</mat-label>
+          <input matInput formControlName="zipCode">
+        </mat-form-field>
+
+        <h3>Payment</h3>
+        <mat-form-field appearance="outline">
+          <mat-label>Cardholder name</mat-label>
+          <input matInput formControlName="cardName">
+        </mat-form-field>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Card number</mat-label>
+            <input matInput formControlName="cardNumber">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Expiration</mat-label>
+            <input matInput formControlName="expiration" placeholder="MM/YY">
+          </mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>CVV</mat-label>
+            <input matInput formControlName="cvv" maxlength="4">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Payment method</mat-label>
+            <mat-select formControlName="paymentMethod">
+              <mat-option [value]="1">Credit card</mat-option>
+              <mat-option [value]="2">Debit card</mat-option>
+              <mat-option [value]="3">PayPal</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <a mat-button routerLink="/basket" [disabled]="submitting()">Cancel</a>
+          <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || submitting()">
+            <mat-icon>payments</mat-icon>
+            {{ submitting() ? 'Submitting…' : 'Place order' }}
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  }
+</div>

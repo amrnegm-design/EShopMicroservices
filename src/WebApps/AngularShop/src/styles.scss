@@ -1,0 +1,40 @@
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #fafafa; }
+
+.page-container { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h1 { margin: 0; font-weight: 400; }
+  .actions { display: flex; gap: 8px; }
+}
+
+.center-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.row-actions { display: flex; gap: 4px; }
+
+.full-width { width: 100%; }
+
+.form-card {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+
+  mat-form-field { width: 100%; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+}
+
+.snack-success { background: #2e7d32; color: white; }
+.snack-error { background: #c62828; color: white; }

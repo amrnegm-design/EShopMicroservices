@@ -1,0 +1,20 @@
+{
+  "/catalog-service": {
+    "target": "http://localhost:6004",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/basket-service": {
+    "target": "http://localhost:6004",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/ordering-service": {
+    "target": "http://localhost:6004",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

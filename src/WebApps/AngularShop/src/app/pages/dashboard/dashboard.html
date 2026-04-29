@@ -1,0 +1,45 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>eShop microservices demo</h1>
+      <p class="muted">Angular client running in <strong>{{ mode }}</strong> mode through the YARP gateway.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    @for (svc of services; track svc.name) {
+      <mat-card class="tile" appearance="outlined">
+        <mat-card-header>
+          <div mat-card-avatar class="avatar" [style.background]="svc.color">
+            <mat-icon>{{ svc.icon }}</mat-icon>
+          </div>
+          <mat-card-title>{{ svc.name }} API</mat-card-title>
+          <mat-card-subtitle><code>{{ svc.baseUrl }}</code></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ svc.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <a mat-flat-button color="primary" [routerLink]="svc.primary.route">{{ svc.primary.label }}</a>
+          @if (svc.secondary) {
+            <a mat-button [routerLink]="svc.secondary.route">{{ svc.secondary.label }}</a>
+          }
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+
+  <mat-card class="info" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Routing</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        All API calls are sent to relative paths. In <strong>local dev</strong> the Angular dev-server proxy
+        forwards them to <code>http://localhost:6004</code> (YARP gateway). In <strong>Docker</strong> the
+        Angular container's nginx forwards them to <code>http://yarpapigateway:8080</code>. The browser
+        always sees a same-origin call, so no per-service CORS is required.
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

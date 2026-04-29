@@ -1,0 +1,61 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>{{ editMode() ? 'Edit product' : 'New product' }}</h1>
+  </div>
+
+  @if (initializing()) {
+    <app-loading-spinner message="Loading product…" />
+  } @else {
+    <mat-card appearance="outlined" class="form-card">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" maxlength="150">
+          @if (form.controls.name.touched && form.controls.name.errors?.['required']) {
+            <mat-error>Name is required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="3" maxlength="500"></textarea>
+          @if (form.controls.description.touched && form.controls.description.errors?.['required']) {
+            <mat-error>Description is required</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Image file</mat-label>
+            <input matInput formControlName="imageFile">
+            <mat-hint>e.g. product-1.png</mat-hint>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Price</mat-label>
+            <input matInput type="number" min="0" step="0.01" formControlName="price">
+            @if (form.controls.price.touched && form.controls.price.errors?.['min']) {
+              <mat-error>Must be greater than 0</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Categories (comma-separated)</mat-label>
+          <input matInput formControlName="category" placeholder="Smart Phone, Tablet">
+          @if (form.controls.category.touched && form.controls.category.errors?.['required']) {
+            <mat-error>At least one category is required</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="cancel()" [disabled]="submitting()">Cancel</button>
+          <button mat-flat-button color="primary" type="submit"
+                  [disabled]="form.invalid || submitting()">
+            <mat-icon>save</mat-icon>
+            {{ submitting() ? 'Saving…' : (editMode() ? 'Save changes' : 'Create product') }}
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  }
+</div>

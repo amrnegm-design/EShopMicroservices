@@ -1,0 +1,26 @@
+.muted { color: #64748b; margin: 4px 0 0; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+
+  .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  mat-card-content { flex: 1; }
+  mat-card-actions { display: flex; gap: 8px; padding: 8px 16px 16px; }
+  code { font-size: 12px; color: #475569; }
+}
+
+.info p { color: #475569; line-height: 1.55; margin: 0; }

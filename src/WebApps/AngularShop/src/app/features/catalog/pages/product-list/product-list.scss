@@ -1,0 +1,12 @@
+.product-name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .muted { font-size: 12px; color: #64748b; }
+}
+
+.actions-col { width: 160px; text-align: right; }
+
+table { width: 100%; }
+.mt-2 { margin-top: 16px; }

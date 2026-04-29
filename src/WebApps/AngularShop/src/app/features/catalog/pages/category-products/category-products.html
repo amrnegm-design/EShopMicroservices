@@ -1,0 +1,41 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Browse by category</h1>
+  </div>
+
+  <form class="search" [formGroup]="form" (ngSubmit)="search()">
+    <mat-form-field appearance="outline">
+      <mat-label>Category name</mat-label>
+      <input matInput formControlName="category" placeholder="Smart Phone">
+    </mat-form-field>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading()">
+      <mat-icon>search</mat-icon> Search
+    </button>
+  </form>
+
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else if (error(); as err) {
+    <app-error-message [message]="err" />
+  } @else if (searchedFor() && !hasResults()) {
+    <app-empty-state
+      icon="category"
+      title="No products"
+      [message]="'Nothing found in category ' + searchedFor()" />
+  } @else if (hasResults()) {
+    <div class="grid">
+      @for (p of products(); track p.id) {
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ p.name }}</mat-card-title>
+            <mat-card-subtitle class="price">{{ p.price | currency }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content><p>{{ p.description }}</p></mat-card-content>
+          <mat-card-actions>
+            <a mat-button color="primary" [routerLink]="['/catalog/products', p.id]">View</a>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</div>
